@@ -1,4 +1,5 @@
 {
+  "whitelist": ["txt", "js", "html"],
   "remove": [ "a", "b" ],
   "replace": [
     [ "c", "d" ],
