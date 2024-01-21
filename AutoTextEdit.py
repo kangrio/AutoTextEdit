@@ -17,22 +17,26 @@ def replace_text_in_files(filenames):
         inputlist = inputtxt.readlines()
         inputtxt.close()
 
+        outputlist = inputlist.copy()
+
         for i in range(len(inputlist)):
             for text in edit["remove"]:
-                if text in inputlist[i]:
-                    inputlist[i] = inputlist[i].replace(text, "")
+                if text in outputlist[i]:
+                    outputlist[i] = outputlist[i].replace(text, "")
                     print(f"We removed {text}(s) on line " + str(i+1))
             for pair in edit["replace"]:
-                if pair[0] in inputlist[i]:
-                    inputlist[i] = inputlist[i].replace(pair[0], pair[1])
+                if pair[0] in outputlist[i]:
+                    outputlist[i] = outputlist[i].replace(pair[0], pair[1])
                     print(f"We replaced {pair[0]}(s) with {pair[1]} on line " + str(i+1))
 
-        file = os.path.relpath(file, 'input')
+        if outputlist != inputlist:
+            file = os.path.relpath(file, 'input')
 
-        os.makedirs(os.path.dirname(f"{os.path.join(outputDir,file)}"), exist_ok=True)
-        outputtxt = open(f"{os.path.join(outputDir,file)}", "w", encoding="utf-8")
-        outputtxt.writelines(inputlist)
-        outputtxt.close()
+            os.makedirs(os.path.dirname(f"{os.path.join(outputDir,file)}"), exist_ok=True)
+            outputtxt = open(f"{os.path.join(outputDir,file)}", "w", encoding="utf-8")
+            outputtxt.writelines(outputlist)
+            outputtxt.close()
+        
         print("")
 
 replace_text_in_files(allFileNames)
